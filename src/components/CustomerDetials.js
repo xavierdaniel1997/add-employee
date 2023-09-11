@@ -1,16 +1,16 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import TableDetials from './TableDetials';
+// import React from 'react'
+// import { useSelector } from 'react-redux'
+// import TableDetials from './TableDetials';
 
-const CustomerDetials = () => {
-    const customerData = useSelector((store) => store.customers.customerList)
+// const CustomerDetials = () => {
+//     const customerData = useSelector((store) => store.customers.customerList)
     
-  return (
-    <div>
-        {customerData.map((customers) => <TableDetials customerData={customers}/>)}
+//   return (
+//     <div>
+//         {customerData.map((customers) => <TableDetials customerData={customers}/>)}
         
-    </div>
-  )
-}
+//     </div>
+//   )
+// }
 
-export default CustomerDetials
+// export default CustomerDetials

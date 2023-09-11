@@ -5,7 +5,6 @@ const customerSlice = createSlice({
   initialState: {
     customerList: [],
     currentCustomer: null,
-    isEditFormOpen: false,
   },
   reducers: {
     addCustomer: (state, action) => {
@@ -29,9 +28,6 @@ const customerSlice = createSlice({
     setCurrentCustomer: (state, action) => {
       state.currentCustomer = action.payload;
     },
-    toggleEditForm: (state, action) => {
-      state.isEditFormOpen = !state.isEditFormOpen;
-    },
   },
 });
 
@@ -40,6 +36,5 @@ export const {
   editCustomer,
   deleteCustomer,
   setCurrentCustomer,
-  toggleEditForm,
 } = customerSlice.actions;
 export default customerSlice.reducer;

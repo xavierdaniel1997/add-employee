@@ -1,10 +1,11 @@
-import {useState} from "react";
 import TableHeading from "./TableHeading";
 import AddCustmor from "./AddCustmor";
-import TableDetials from "./TableDetials";
 import CustomerDetials from "./CustomerDetials";
-import { useDispatch, useSelector } from "react-redux";
-import { toggleDataForm } from "../redux/toggleFormSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {toggleDataForm} from "../redux/toggleFormSlice";
+import {useState} from "react";
+import TableDetials from "./TableDetials";
+import NoResultFound from "./NoResultFound";
 
 const tableHeading = [
   "ID",
@@ -15,17 +16,41 @@ const tableHeading = [
   "Service",
   "Product",
   "Price",
-]; 
+];
 
 const CustmorTable = () => {
   const dispatch = useDispatch();
-  const showForm = useSelector((store) => store.toggleForm.showForm)
+  const customerList = useSelector((store) => store.customers.customerList);
+  const showForm = useSelector((store) => store.toggleForm.showForm);
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+
+  const handleSearchQuery = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+    // setSearchQuery(e.target.value);
+    // console.log(searchQuery);
+
+ 
+      const filterSearch = customerList.filter((data) =>
+        data.customer.toLowerCase().includes(query)
+      );
+      setSearchResults(filterSearch)
+  };
+
+  // const handleSearchCustomer = () => {
+  //   const filterSearch = customerList.filter((data) =>
+  //     data.customer.toLowerCase().includes(searchQuery.toLowerCase())
+  //   );
+  //   setSearchResults(filterSearch);
+
+  // };
 
   const handleShowForm = () => {
-    dispatch(toggleDataForm())
+    dispatch(toggleDataForm());
   };
- 
+
   return (
     <div className="mt-8">
       <div className="my-10">
@@ -35,8 +60,13 @@ const CustmorTable = () => {
               type="text"
               placeholder="Search detials"
               className="p-3 w-96  outline-none rounded-l-md"
+              value={searchQuery}
+              onChange={handleSearchQuery}
             />
-            <button className="px-3 bg-blue-500 h-full text-white">
+            <button
+              className="px-3 bg-blue-500 h-full text-white hover:bg-blue-400"
+              // onClick={handleSearchCustomer}
+            >
               search
             </button>
           </div>
@@ -59,8 +89,22 @@ const CustmorTable = () => {
               <TableHeading key={index} tableTitle={heading} />
             ))}
           </th>
-          {/* <TableDetials /> */}
-          <CustomerDetials/>
+
+          {searchResults.length > 0
+            ? searchResults.map((customerData, index) => (
+                <TableDetials key={index} customerData={customerData} />
+              ))
+            : customerList.map((customerData, index) => (
+                <TableDetials key={index} customerData={customerData} />
+              ))}
+
+          {searchResults.length === 0 && customerList.length === 0 && (
+            <tr>
+              <td colSpan={tableHeading.length}>
+                <NoResultFound />
+              </td>
+            </tr>
+          )}
         </thead>
       </table>
     </div>
